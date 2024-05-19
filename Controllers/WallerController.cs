@@ -25,6 +25,9 @@ namespace WalletService.Controllers
             _getTransactionsUseCase = getTransactionsUseCase;
         }
 
+        /// <summary>
+        /// Register wallet for new player with initial balance 0 (should return error if player's wallet is already registered).
+        /// </summary>
         [HttpPost("register")]
         public IActionResult RegisterPlayer([FromBody] Guid playerId)
         {
@@ -39,6 +42,9 @@ namespace WalletService.Controllers
             }
         }
 
+        /// <summary>
+        /// Get player's balance.
+        /// </summary>
         [HttpGet("{playerId}/balance")]
         public IActionResult GetBalance(Guid playerId)
         {
@@ -53,8 +59,11 @@ namespace WalletService.Controllers
             }
         }
 
+        /// <summary>
+        /// Credit transaction to player's wallet (returns accepted/rejected).
+        /// </summary>
         [HttpPost("transaction")]
-        public IActionResult ProcessTransaction([FromBody] TransactionDTO transactionDto)
+        public IActionResult ProcessTransaction([FromBody] TransactionRequest transactionDto)
         {
             try
             {
@@ -67,6 +76,9 @@ namespace WalletService.Controllers
             }
         }
 
+        /// <summary>
+        /// Get list of saved transactions (id, amount, type) for given player.
+        /// </summary>
         [HttpGet("{playerId}/transactions")]
         public IActionResult GetTransactions(Guid playerId)
         {

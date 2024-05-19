@@ -14,7 +14,7 @@ namespace WalletService.UseCases
             _transactionDataService = transactionDataService;
         }
 
-        public bool Execute(TransactionDTO transactionDto)
+        public bool Execute(TransactionRequest transactionDto)
         {
             var player = _playerDataService.GetPlayer(transactionDto.Id);
             if (player == null) throw new Exception("Player not found.");

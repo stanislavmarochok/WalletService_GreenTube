@@ -1,6 +1,6 @@
 ﻿namespace WalletService.Models
 {
-    public class TransactionDTO
+    public class TransactionRequest
     {
         public Guid Id { get; set; }
         public TransactionType Type { get; set; }

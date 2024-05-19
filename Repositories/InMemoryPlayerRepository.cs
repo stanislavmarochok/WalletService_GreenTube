@@ -7,7 +7,7 @@ namespace WalletService.Repositories
     {
         private readonly ConcurrentDictionary<Guid, Player> _players = new ConcurrentDictionary<Guid, Player>();
 
-        public Player GetPlayer(Guid playerId)
+        public Player? GetPlayer(Guid playerId)
         {
             _players.TryGetValue(playerId, out var player);
             return player;
