@@ -1,5 +1,5 @@
 ﻿using WalletService.DataService;
-using WalletService.Domain;
+using WalletService.Messages;
 using WalletService.UseCases.Interfaces;
 
 namespace WalletService.UseCases
@@ -13,9 +13,18 @@ namespace WalletService.UseCases
             _transactionDataService = transactionDataService;
         }
 
-        public IAsyncEnumerable<Transaction> ExecuteAsync(Guid playerId)
+        public async IAsyncEnumerable<TransactionResponse> ExecuteAsync(Guid playerId)
         {
-            return _transactionDataService.GetTransactionsAsync(playerId);
+            await foreach (var transaction in _transactionDataService.GetTransactionsAsync(playerId))
+            {
+                yield return new TransactionResponse
+                {
+                    Id = transaction.Id,
+                    PlayerId = playerId,
+                    Amount = transaction.Amount,
+                    Type = transaction.Type
+                };
+            }
         }
     }
 }

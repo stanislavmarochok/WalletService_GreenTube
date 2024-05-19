@@ -1,9 +1,9 @@
-﻿using WalletService.Domain;
+﻿using WalletService.Messages;
 
 namespace WalletService.UseCases.Interfaces
 {
     public interface IGetTransactions
     {
-        IAsyncEnumerable<Transaction> ExecuteAsync(Guid playerId);
+        IAsyncEnumerable<TransactionResponse> ExecuteAsync(Guid playerId);
     }
 }
