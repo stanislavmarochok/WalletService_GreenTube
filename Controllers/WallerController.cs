@@ -80,28 +80,16 @@ namespace WalletService.Controllers
         /// Get list of saved transactions (id, amount, type) for given player.
         /// </summary>
         [HttpGet("{playerId}/transactions")]
-        public async Task GetTransactions(Guid playerId)
+        public async Task<IActionResult> GetTransactions(Guid playerId)
         {
-            Response.ContentType = "application/json";
-            await using var writer = new System.Text.Json.Utf8JsonWriter(Response.BodyWriter);
-
-            writer.WriteStartArray();
-
             try
             {
-                await foreach (var transaction in _getTransactionsUseCase.ExecuteAsync(playerId))
-                {
-                    await System.Text.Json.JsonSerializer.SerializeAsync(Response.Body, transaction);
-                }
+                return Ok(await _getTransactionsUseCase.ExecuteAsync(playerId).ToListAsync());
             }
             catch (Exception ex)
             {
-                Response.StatusCode = 404;
-                writer.WriteStringValue(ex.Message);
-                return;
+                return BadRequest(ex.Message);
             }
-
-            writer.WriteStartArray();
         }
     }
 }

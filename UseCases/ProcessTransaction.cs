@@ -19,7 +19,7 @@ namespace WalletService.UseCases
 
         public async Task<bool> ExecuteAsync(TransactionRequest transactionRequest)
         {
-            var player = _playerDataService.GetPlayer(transactionRequest.Id);
+            var player = _playerDataService.GetPlayer(transactionRequest.PlayerId);
             if (player == null) throw new Exception("Player not found.");
 
             var existingTransactions = await _transactionDataService.GetTransactionsAsync(player.Id).ToListAsync();
