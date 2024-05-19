@@ -2,7 +2,6 @@
 using WalletService.Messages;
 using WalletService.Domain;
 using WalletService.UseCases.Interfaces;
-using System.Transactions;
 using Transaction = WalletService.Domain.Transaction;
 
 namespace WalletService.UseCases
@@ -18,12 +17,12 @@ namespace WalletService.UseCases
             _transactionDataService = transactionDataService;
         }
 
-        public bool Execute(TransactionRequest transactionRequest)
+        public async Task<bool> ExecuteAsync(TransactionRequest transactionRequest)
         {
             var player = _playerDataService.GetPlayer(transactionRequest.Id);
             if (player == null) throw new Exception("Player not found.");
 
-            var existingTransactions = _transactionDataService.GetTransactions(player.Id).ToList();
+            var existingTransactions = await _transactionDataService.GetTransactionsAsync(player.Id).ToListAsync();
             var existingTransaction = existingTransactions.FirstOrDefault(t => t.Id == transactionRequest.Id);
 
             if (existingTransaction != null)

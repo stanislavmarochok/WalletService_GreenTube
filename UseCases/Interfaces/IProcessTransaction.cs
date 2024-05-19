@@ -1,10 +1,9 @@
-﻿using WalletService.Domain;
-using WalletService.Messages;
+﻿using WalletService.Messages;
 
 namespace WalletService.UseCases.Interfaces
 {
     public interface IProcessTransaction
     {
-        bool Execute(TransactionRequest transactionDto);
+        Task<bool> ExecuteAsync(TransactionRequest transactionRequest);
     }
 }

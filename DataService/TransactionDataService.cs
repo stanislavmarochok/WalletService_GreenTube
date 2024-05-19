@@ -1,4 +1,4 @@
-﻿using WalletService.Models;
+﻿using WalletService.Domain;
 using WalletService.Repositories;
 
 namespace WalletService.DataService
@@ -12,9 +12,9 @@ namespace WalletService.DataService
             _transactionRepository = transactionRepository;
         }
 
-        public IEnumerable<Transaction> GetTransactions(Guid playerId)
+        public IAsyncEnumerable<Transaction> GetTransactionsAsync(Guid playerId)
         {
-            return _transactionRepository.GetTransactions(playerId);
+            return _transactionRepository.GetTransactionsAsync(playerId);
         }
 
         public void AddTransaction(Transaction transaction)

@@ -1,5 +1,6 @@
 ﻿using WalletService.DataService;
 using WalletService.Domain;
+using WalletService.Messages;
 using WalletService.UseCases.Interfaces;
 
 namespace WalletService.UseCases
@@ -13,9 +14,9 @@ namespace WalletService.UseCases
             _playerDataService = playerDataService;
         }
 
-        public void Execute(Guid playerId)
+        public void Execute(RegisterPlayerRequest request)
         {
-            var player = new Player { Id = playerId, Balance = 0 };
+            var player = new Player { Id = request.playerId, Balance = 0 };
             _playerDataService.AddPlayer(player);
         }
     }

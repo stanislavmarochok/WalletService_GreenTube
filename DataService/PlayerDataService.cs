@@ -1,4 +1,4 @@
-﻿using WalletService.Models;
+﻿using WalletService.Domain;
 using WalletService.Repositories;
 
 namespace WalletService.DataService
@@ -12,7 +12,7 @@ namespace WalletService.DataService
             _playerRepository = playerRepository;
         }
 
-        public Player GetPlayer(Guid playerId)
+        public Player? GetPlayer(Guid playerId)
         {
             return _playerRepository.GetPlayer(playerId);
         }

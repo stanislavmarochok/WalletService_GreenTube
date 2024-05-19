@@ -29,11 +29,11 @@ namespace WalletService.Controllers
         /// Register wallet for new player with initial balance 0 (should return error if player's wallet is already registered).
         /// </summary>
         [HttpPost("register")]
-        public IActionResult RegisterPlayer([FromBody] Guid playerId)
+        public IActionResult RegisterPlayer([FromBody] RegisterPlayerRequest request)
         {
             try
             {
-                _registerPlayerUseCase.Execute(playerId);
+                _registerPlayerUseCase.Execute(request);
                 return Ok();
             }
             catch (Exception ex)
@@ -63,11 +63,11 @@ namespace WalletService.Controllers
         /// Credit transaction to player's wallet (returns accepted/rejected).
         /// </summary>
         [HttpPost("transaction")]
-        public IActionResult ProcessTransaction([FromBody] TransactionRequest transactionRequest)
+        public async Task<IActionResult> ProcessTransaction([FromBody] TransactionRequest transactionRequest)
         {
             try
             {
-                var result = _processTransactionUseCase.Execute(transactionRequest);
+                var result = await _processTransactionUseCase.ExecuteAsync(transactionRequest);
                 return result ? Ok() : BadRequest("Transaction failed.");
             }
             catch (Exception ex)
@@ -80,17 +80,28 @@ namespace WalletService.Controllers
         /// Get list of saved transactions (id, amount, type) for given player.
         /// </summary>
         [HttpGet("{playerId}/transactions")]
-        public IActionResult GetTransactions(Guid playerId)
+        public async Task GetTransactions(Guid playerId)
         {
+            Response.ContentType = "application/json";
+            await using var writer = new System.Text.Json.Utf8JsonWriter(Response.BodyWriter);
+
+            writer.WriteStartArray();
+
             try
             {
-                var transactions = _getTransactionsUseCase.Execute(playerId);
-                return Ok(transactions);
+                await foreach (var transaction in _getTransactionsUseCase.ExecuteAsync(playerId))
+                {
+                    await System.Text.Json.JsonSerializer.SerializeAsync(Response.Body, transaction);
+                }
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                Response.StatusCode = 404;
+                writer.WriteStringValue(ex.Message);
+                return;
             }
+
+            writer.WriteStartArray();
         }
     }
 }

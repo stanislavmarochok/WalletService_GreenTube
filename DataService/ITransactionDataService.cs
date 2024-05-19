@@ -4,7 +4,7 @@ namespace WalletService.DataService
 {
     public interface ITransactionDataService
     {
-        IEnumerable<Transaction> GetTransactions(Guid playerId);
+        IAsyncEnumerable<Transaction> GetTransactionsAsync(Guid playerId);
         void AddTransaction(Transaction transaction);
     }
 }

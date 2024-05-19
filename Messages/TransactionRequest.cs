@@ -1,11 +1,11 @@
-﻿using WalletService.Models;
+﻿using WalletService.Domain;
 
 namespace WalletService.Messages
 {
     public class TransactionRequest
     {
         public Guid Id { get; set; }
-        public TransactionType Type { get; set; }
+        public TransactionTypeEnum Type { get; set; }
         public decimal Amount { get; set; }
     }
 }

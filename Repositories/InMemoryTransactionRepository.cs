@@ -7,10 +7,15 @@ namespace WalletService.Repositories
     {
         private readonly ConcurrentDictionary<Guid, List<Transaction>> _transactions = new ConcurrentDictionary<Guid, List<Transaction>>();
 
-        public IEnumerable<Transaction> GetTransactions(Guid playerId)
+        public IAsyncEnumerable<Transaction> GetTransactionsAsync(Guid playerId)
         {
             _transactions.TryGetValue(playerId, out var transactions);
-            return transactions ?? new List<Transaction>();
+            if (transactions != null)
+            {
+                return transactions.ToAsyncEnumerable();
+            }
+
+            return AsyncEnumerable.Empty<Transaction>();
         }
 
         public void AddTransaction(Transaction transaction)

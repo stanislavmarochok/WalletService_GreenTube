@@ -4,6 +4,6 @@ namespace WalletService.UseCases.Interfaces
 {
     public interface IGetTransactions
     {
-        IEnumerable<Transaction> Execute(Guid playerId);
+        IAsyncEnumerable<Transaction> ExecuteAsync(Guid playerId);
     }
 }

@@ -13,9 +13,9 @@ namespace WalletService.UseCases
             _transactionDataService = transactionDataService;
         }
 
-        public IEnumerable<Transaction> Execute(Guid playerId)
+        public IAsyncEnumerable<Transaction> ExecuteAsync(Guid playerId)
         {
-            return _transactionDataService.GetTransactions(playerId);
+            return _transactionDataService.GetTransactionsAsync(playerId);
         }
     }
 }
