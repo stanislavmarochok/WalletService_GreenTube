@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WalletService.Models;
-using WalletService.UseCases;
+using WalletService.Messages;
+using WalletService.UseCases.Interfaces;
 
 namespace WalletService.Controllers
 {
@@ -8,16 +8,16 @@ namespace WalletService.Controllers
     [Route("api/[controller]")]
     public class WalletController : ControllerBase
     {
-        private readonly RegisterPlayer _registerPlayerUseCase;
-        private readonly GetBalance _getBalanceUseCase;
-        private readonly ProcessTransaction _processTransactionUseCase;
-        private readonly GetTransactions _getTransactionsUseCase;
+        private readonly IRegisterPlayer _registerPlayerUseCase;
+        private readonly IGetBalance _getBalanceUseCase;
+        private readonly IProcessTransaction _processTransactionUseCase;
+        private readonly IGetTransactions _getTransactionsUseCase;
 
         public WalletController(
-            RegisterPlayer registerPlayerUseCase,
-            GetBalance getBalanceUseCase,
-            ProcessTransaction processTransactionUseCase,
-            GetTransactions getTransactionsUseCase)
+            IRegisterPlayer registerPlayerUseCase,
+            IGetBalance getBalanceUseCase,
+            IProcessTransaction processTransactionUseCase,
+            IGetTransactions getTransactionsUseCase)
         {
             _registerPlayerUseCase = registerPlayerUseCase;
             _getBalanceUseCase = getBalanceUseCase;
@@ -63,11 +63,11 @@ namespace WalletService.Controllers
         /// Credit transaction to player's wallet (returns accepted/rejected).
         /// </summary>
         [HttpPost("transaction")]
-        public IActionResult ProcessTransaction([FromBody] TransactionRequest transactionDto)
+        public IActionResult ProcessTransaction([FromBody] TransactionRequest transactionRequest)
         {
             try
             {
-                var result = _processTransactionUseCase.Execute(transactionDto);
+                var result = _processTransactionUseCase.Execute(transactionRequest);
                 return result ? Ok() : BadRequest("Transaction failed.");
             }
             catch (Exception ex)

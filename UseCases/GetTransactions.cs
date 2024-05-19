@@ -1,9 +1,10 @@
 ﻿using WalletService.DataService;
-using WalletService.Models;
+using WalletService.Domain;
+using WalletService.UseCases.Interfaces;
 
 namespace WalletService.UseCases
 {
-    public class GetTransactions
+    public class GetTransactions : IGetTransactions
     {
         private readonly ITransactionDataService _transactionDataService;
 

@@ -1,4 +1,6 @@
-﻿namespace WalletService.Models
+﻿using WalletService.Models;
+
+namespace WalletService.Messages
 {
     public class TransactionRequest
     {

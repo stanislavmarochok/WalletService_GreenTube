@@ -1,6 +1,7 @@
 using WalletService.DataService;
 using WalletService.Repositories;
 using WalletService.UseCases;
+using WalletService.UseCases.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +18,10 @@ builder.Services.AddSingleton<ITransactionRepository, InMemoryTransactionReposit
 builder.Services.AddSingleton<IPlayerDataService, PlayerDataService>();
 builder.Services.AddSingleton<ITransactionDataService, TransactionDataService>();
 
-builder.Services.AddSingleton<RegisterPlayer>();
-builder.Services.AddSingleton<GetBalance>();
-builder.Services.AddSingleton<ProcessTransaction>();
-builder.Services.AddSingleton<GetTransactions>();
+builder.Services.AddSingleton<IRegisterPlayer, RegisterPlayer>();
+builder.Services.AddSingleton<IGetBalance, GetBalance>();
+builder.Services.AddSingleton<IProcessTransaction, ProcessTransaction>();
+builder.Services.AddSingleton<IGetTransactions, GetTransactions>();
 
 var app = builder.Build();
 

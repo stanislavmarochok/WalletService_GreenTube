@@ -1,8 +1,9 @@
 ﻿using WalletService.DataService;
+using WalletService.UseCases.Interfaces;
 
 namespace WalletService.UseCases
 {
-    public class GetBalance
+    public class GetBalance : IGetBalance
     {
         private readonly IPlayerDataService _playerDataService;
 

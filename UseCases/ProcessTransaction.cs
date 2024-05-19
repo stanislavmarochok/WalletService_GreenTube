@@ -1,9 +1,13 @@
 ﻿using WalletService.DataService;
-using WalletService.Models;
+using WalletService.Messages;
+using WalletService.Domain;
+using WalletService.UseCases.Interfaces;
+using System.Transactions;
+using Transaction = WalletService.Domain.Transaction;
 
 namespace WalletService.UseCases
 {
-    public class ProcessTransaction
+    public class ProcessTransaction : IProcessTransaction
     {
         private readonly IPlayerDataService _playerDataService;
         private readonly ITransactionDataService _transactionDataService;
@@ -14,26 +18,41 @@ namespace WalletService.UseCases
             _transactionDataService = transactionDataService;
         }
 
-        public bool Execute(TransactionRequest transactionDto)
+        public bool Execute(TransactionRequest transactionRequest)
         {
-            var player = _playerDataService.GetPlayer(transactionDto.Id);
+            var player = _playerDataService.GetPlayer(transactionRequest.Id);
             if (player == null) throw new Exception("Player not found.");
 
-            var existingTransactions = _transactionDataService.GetTransactions(player.Id);
-            if (existingTransactions.Any(t => t.Id == transactionDto.Id))
+            var existingTransactions = _transactionDataService.GetTransactions(player.Id).ToList();
+            var existingTransaction = existingTransactions.FirstOrDefault(t => t.Id == transactionRequest.Id);
+
+            if (existingTransaction != null)
             {
-                return existingTransactions.First(t => t.Id == transactionDto.Id).Type == transactionDto.Type;
+                return existingTransaction.Status == TransactionStatusEnum.Accepted;
             }
 
-            var newBalance = player.Balance + (transactionDto.Type == TransactionType.Stake ? -transactionDto.Amount : transactionDto.Amount);
-            if (newBalance < 0) return false;
+            var newBalance = player.Balance + (transactionRequest.Type == TransactionTypeEnum.Stake ? -transactionRequest.Amount : transactionRequest.Amount);
+            if (newBalance < 0)
+            {
+                var rejectedTransaction = new Transaction
+                {
+                    Id = transactionRequest.Id,
+                    PlayerId = player.Id,
+                    Type = transactionRequest.Type,
+                    Amount = transactionRequest.Amount,
+                    Status = TransactionStatusEnum.Rejected
+                };
+                _transactionDataService.AddTransaction(rejectedTransaction);
+                return false;
+            }
 
             var transaction = new Transaction
             {
-                Id = transactionDto.Id,
+                Id = transactionRequest.Id,
                 PlayerId = player.Id,
-                Type = transactionDto.Type,
-                Amount = transactionDto.Amount
+                Type = transactionRequest.Type,
+                Amount = transactionRequest.Amount,
+                Status = TransactionStatusEnum.Accepted
             };
 
             player.Balance = newBalance;

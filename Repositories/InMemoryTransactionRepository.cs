@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using WalletService.Models;
+using WalletService.Domain;
 
 namespace WalletService.Repositories
 {

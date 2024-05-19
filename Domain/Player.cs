@@ -1,4 +1,4 @@
-﻿namespace WalletService.Models
+﻿namespace WalletService.Domain
 {
     public class Player
     {
