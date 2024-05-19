@@ -1,6 +1,6 @@
 ﻿using WalletService.Domain;
 
-namespace WalletService.Repositories
+namespace WalletService.Repositories.Interfaces
 {
     public interface IPlayerRepository
     {

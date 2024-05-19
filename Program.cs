@@ -1,5 +1,6 @@
 using WalletService.DataService;
 using WalletService.Repositories;
+using WalletService.Repositories.Interfaces;
 using WalletService.UseCases;
 using WalletService.UseCases.Interfaces;
 

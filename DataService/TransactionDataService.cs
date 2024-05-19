@@ -1,5 +1,5 @@
 ﻿using WalletService.Domain;
-using WalletService.Repositories;
+using WalletService.Repositories.Interfaces;
 
 namespace WalletService.DataService
 {
