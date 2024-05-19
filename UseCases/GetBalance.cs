@@ -1,4 +1,4 @@
-﻿using WalletService.DataService;
+﻿using WalletService.DataService.Interfaces;
 using WalletService.UseCases.Interfaces;
 
 namespace WalletService.UseCases

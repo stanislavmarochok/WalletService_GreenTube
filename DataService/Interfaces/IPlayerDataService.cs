@@ -1,6 +1,6 @@
 ﻿using WalletService.Domain;
 
-namespace WalletService.DataService
+namespace WalletService.DataService.Interfaces
 {
     public interface IPlayerDataService
     {

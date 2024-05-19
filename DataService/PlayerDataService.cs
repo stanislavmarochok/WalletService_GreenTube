@@ -1,4 +1,5 @@
-﻿using WalletService.Domain;
+﻿using WalletService.DataService.Interfaces;
+using WalletService.Domain;
 using WalletService.Repositories.Interfaces;
 
 namespace WalletService.DataService

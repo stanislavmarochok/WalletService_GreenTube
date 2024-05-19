@@ -1,8 +1,8 @@
-﻿using WalletService.DataService;
-using WalletService.Messages;
+﻿using WalletService.Messages;
 using WalletService.Domain;
 using WalletService.UseCases.Interfaces;
 using Transaction = WalletService.Domain.Transaction;
+using WalletService.DataService.Interfaces;
 
 namespace WalletService.UseCases
 {
